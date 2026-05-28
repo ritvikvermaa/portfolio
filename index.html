@@ -24,18 +24,28 @@
     --nav-h: 64px;
   }
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #111110;
-      --surface: #1c1c1a;
-      --text: #e8e7e1;
-      --muted: #8a8a82;
-      --border: #2a2a28;
-      --accent: #e8e7e1;
-      --tag-bg: #232320;
-      --tag-text: #b0b0a8;
-      --link: #e8e7e1;
-    }
+  html[data-theme="dark"] {
+    --bg: #111110;
+    --surface: #1c1c1a;
+    --text: #e8e7e1;
+    --muted: #8a8a82;
+    --border: #2a2a28;
+    --accent: #e8e7e1;
+    --tag-bg: #232320;
+    --tag-text: #b0b0a8;
+    --link: #e8e7e1;
+  }
+
+  html[data-theme="light"] {
+    --bg: #f7f6f2;
+    --surface: #ffffff;
+    --text: #1a1a18;
+    --muted: #6b6b63;
+    --border: #e2e1d9;
+    --accent: #1a1a18;
+    --tag-bg: #eeede8;
+    --tag-text: #3a3a34;
+    --link: #1a1a18;
   }
 
   html { scroll-behavior: smooth; }
@@ -48,6 +58,7 @@
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
     cursor: none;
+    transition: background 0.25s ease, color 0.25s ease;
   }
 
   /* Custom cursor */
@@ -111,11 +122,42 @@
   .nav-links a:hover { color: var(--text); }
   .nav-links a:hover::after { transform: scaleX(1); }
 
+  .theme-toggle {
+    width: 42px;
+    height: 26px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--text);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  }
+  .theme-toggle:hover {
+    border-color: var(--text);
+    transform: translateY(-1px);
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .nav-links { gap: 1rem; }
+    .nav-links a { font-size: 0.78rem; }
+    .nav-actions { gap: 1rem; }
+  }
+
   /* Main layout */
   main { padding-top: var(--nav-h); }
 
   section {
-    padding: clamp(5rem, 10vw, 8rem) clamp(1.5rem, 5vw, 4rem);
+    padding: clamp(3.25rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
     max-width: 900px;
     margin: 0 auto;
   }
@@ -127,7 +169,7 @@
     letter-spacing: 0.12em;
     color: var(--muted);
     text-transform: uppercase;
-    margin-bottom: 3rem;
+    margin-bottom: 1.75rem;
     display: flex; align-items: center; gap: 1rem;
   }
   .section-label::after {
@@ -140,7 +182,7 @@
   #hero {
     min-height: calc(100vh - var(--nav-h));
     display: flex; flex-direction: column; justify-content: center;
-    padding-top: 4rem; padding-bottom: 4rem;
+    padding-top: 3rem; padding-bottom: 3rem;
   }
 
   .hero-eyebrow {
@@ -180,7 +222,7 @@
   }
 
   .hero-cta {
-    margin-top: 3rem;
+    margin-top: 2rem;
     display: flex; gap: 1.25rem; align-items: center;
     opacity: 0;
     animation: fadeUp 0.6s ease 0.65s forwards;
@@ -219,7 +261,7 @@
 
   .hero-scroll {
     margin-top: auto;
-    padding-top: 4rem;
+    padding-top: 2rem;
     display: flex; align-items: center; gap: 0.75rem;
     opacity: 0;
     animation: fadeUp 0.6s ease 0.9s forwards;
@@ -238,7 +280,7 @@
   .about-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    gap: 2.75rem;
     align-items: start;
   }
   @media (max-width: 640px) {
@@ -350,7 +392,7 @@
     grid-template-columns: auto 1fr auto;
     gap: 2rem;
     align-items: start;
-    padding: 2rem 0;
+    padding: 1.35rem 0;
     border-bottom: 1px solid var(--border);
     cursor: pointer;
     transition: opacity 0.2s;
@@ -400,7 +442,7 @@
   .contact-inner {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    gap: 2.75rem;
     align-items: start;
   }
   @media (max-width: 640px) {
@@ -484,7 +526,7 @@
   /* Footer */
   footer {
     border-top: 1px solid var(--border);
-    padding: 2rem clamp(1.5rem, 5vw, 4rem);
+    padding: 1.35rem clamp(1.5rem, 5vw, 4rem);
     max-width: 900px;
     margin: 0 auto;
     display: flex; justify-content: space-between; align-items: center;
@@ -521,12 +563,15 @@
 
 <nav id="main-nav">
   <a href="#hero" class="nav-logo">RV</a>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
+  <div class="nav-actions">
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle light and dark mode">☾</button>
+  </div>
 </nav>
 
 <main>
@@ -598,6 +643,8 @@
           <span class="tag">HTML</span>
           <span class="tag">CSS</span>
           <span class="tag">JavaScript</span>
+          <span class="tag">React</span>
+          <span class="tag">Leaflet</span>
         </div>
       </div>
       <div class="skill-group">
@@ -606,6 +653,7 @@
           <span class="tag">MySQL</span>
           <span class="tag">MongoDB</span>
           <span class="tag">Python</span>
+          <span class="tag">Flask</span>
         </div>
       </div>
       <div class="skill-group">
@@ -615,6 +663,8 @@
           <span class="tag">NumPy</span>
           <span class="tag">Matplotlib</span>
           <span class="tag">Scikit-learn</span>
+          <span class="tag">Random Forest</span>
+          <span class="tag">Pandas</span>
         </div>
       </div>
     </div>
@@ -625,34 +675,38 @@
     <div class="section-label reveal">03 — Projects</div>
     <div class="projects-list">
 
-      <a href="#" class="project-item reveal">
+      <a href="https://github.com/ritvikvermaa/air-watch" target="_blank" rel="noopener noreferrer" class="project-item reveal" aria-label="Open AirWatch GitHub repository">
         <div class="project-num">01</div>
         <div class="project-content">
-          <div class="project-title">Air Quality & Pollution Analytics Platform</div>
+          <div class="project-title">AirWatch — AQI Analytics Platform</div>
           <div class="project-desc">
-          Analysing government air quality datasets across multiple cities. Performing data preprocessing, visualization, and trend analysis, and applying machine learning techniques to predict pollution levels while ensuring data accuracy and consistency.
+          Built a live air quality analytics platform using CPCB/data.gov.in station data, Open-Meteo weather inputs, Flask ML APIs, and an interactive Leaflet map. The system visualizes station-level AQI estimates, fills missing PM values with Random Forest models, and presents health-focused insights through a clean dashboard.
           </div>
           <div class="project-tags">
-            <span class="tag">Python</span>
-            <span class="tag">Pandas</span>
-            <span class="tag">NumPy</span>
-            <span class="tag">Matplotlib</span>
-            <span class="tag">Scikit-learn</span>
+            <span class="tag">React</span>
+            <span class="tag">Flask</span>
+            <span class="tag">Random Forest</span>
+            <span class="tag">CPCB API</span>
+            <span class="tag">Open-Meteo</span>
+            <span class="tag">Leaflet</span>
           </div>
         </div>
         <div class="project-arrow">↗</div>
       </a>
 
-      <a href="#" class="project-item reveal">
+      <a href="#" target="_blank" rel="noopener noreferrer" class="project-item reveal" aria-label="Open School Management System GitHub repository">
         <div class="project-num">02</div>
         <div class="project-content">
           <div class="project-title">School Management System</div>
           <div class="project-desc">
-          Developed a Python-based system to manage students, teachers, and administrative records. Integrated MySQL for secure data storage and focused on clean code structure, usability, and debugging for reliable functionality.
+          Developed a Python and MySQL based management system for handling student records, teacher details, and administrative data. Focused on database connectivity, CRUD operations, clean program structure, and reliable record management.
           </div>
         <div class="project-tags">
           <span class="tag">Python</span>
           <span class="tag">MySQL</span>
+          <span class="tag">Flask</span>
+          <span class="tag">CRUD</span>
+          <span class="tag">Database Design</span>
         </div>
         </div>
         <div class="project-arrow">↗</div>
@@ -708,6 +762,23 @@
 </footer>
 
 <script>
+  const themeToggle = document.getElementById('theme-toggle');
+  const savedTheme = localStorage.getItem('portfolio-theme');
+  const preferredTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  const initialTheme = savedTheme || preferredTheme;
+
+  document.documentElement.setAttribute('data-theme', initialTheme);
+  themeToggle.textContent = initialTheme === 'dark' ? '☀' : '☾';
+
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+    document.documentElement.setAttribute('data-theme', nextTheme);
+    localStorage.setItem('portfolio-theme', nextTheme);
+    themeToggle.textContent = nextTheme === 'dark' ? '☀' : '☾';
+  });
+
   const cursor = document.getElementById('cursor');
   let mx = 0, my = 0, cx = 0, cy = 0;
 
