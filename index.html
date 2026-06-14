@@ -231,6 +231,12 @@
 	    top: 28px;
 	  }
 
+	  .drawer-close {
+	    position: absolute;
+	    top: 1.25rem;
+	    right: 1.4rem;
+	  }
+
 	  body.menu-open .menu-toggle span:first-child {
 	    top: 23px;
 	    transform: translateX(-50%) rotate(45deg);
@@ -360,6 +366,11 @@
 	    .menu-toggle {
 	      width: 42px;
 	      height: 42px;
+	    }
+
+	    .drawer-close {
+	      top: 1rem;
+	      right: 1rem;
 	    }
 
 	    .nav-drawer {
@@ -1002,7 +1013,7 @@
 <nav id="main-nav">
   <a href="#hero" class="nav-logo">RV</a>
   <div class="nav-actions">
-    <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-drawer">
+    <button class="menu-toggle" id="menu-toggle" data-menu-toggle type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-drawer">
       <span></span>
       <span></span>
     </button>
@@ -1011,6 +1022,10 @@
 
 <div class="menu-overlay" id="menu-overlay"></div>
 <aside class="nav-drawer" id="nav-drawer" aria-hidden="true">
+  <button class="menu-toggle drawer-close" data-menu-toggle type="button" aria-label="Close navigation menu" aria-expanded="false" aria-controls="nav-drawer">
+    <span></span>
+    <span></span>
+  </button>
   <div>
     <p class="drawer-label">Menu</p>
     <ul class="drawer-links">
@@ -1273,19 +1288,23 @@
 	    document.body.classList.remove('is-loading');
 	  }
 
-	  const menuToggle = document.getElementById('menu-toggle');
+	  const menuButtons = document.querySelectorAll('[data-menu-toggle]');
 	  const menuOverlay = document.getElementById('menu-overlay');
 	  const navDrawer = document.getElementById('nav-drawer');
 
 	  function setMenuOpen(isOpen) {
 	    document.body.classList.toggle('menu-open', isOpen);
-	    menuToggle.setAttribute('aria-expanded', String(isOpen));
-	    menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+	    menuButtons.forEach(button => {
+	      button.setAttribute('aria-expanded', String(isOpen));
+	      button.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+	    });
 	    navDrawer.setAttribute('aria-hidden', String(!isOpen));
 	  }
 
-	  menuToggle.addEventListener('click', () => {
-	    setMenuOpen(!document.body.classList.contains('menu-open'));
+	  menuButtons.forEach(button => {
+	    button.addEventListener('click', () => {
+	      setMenuOpen(!document.body.classList.contains('menu-open'));
+	    });
 	  });
 
 	  menuOverlay.addEventListener('click', () => setMenuOpen(false));
